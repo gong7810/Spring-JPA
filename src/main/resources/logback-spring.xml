@@ -1,0 +1,66 @@
+<configuration debug="true">
+	<!-- Appenders -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d %5p [%c] %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d %5p %m%n</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+		<smtpHost>smtp.gmail.com</smtpHost>
+		<smtpPort>587</smtpPort>
+		<username>soony151128@gmail.com</username>
+		<password>aszqedpvehzyipbl</password>
+		<STARTTLS>true</STARTTLS>
+		<to>sdaeseong.kim@gmail.com</to>
+		<from>soony151128@gmail.com</from>
+		<subject>Log message from %logger{0}</subject>
+		<layout class="ch.qos.logback.classic.html.HTMLLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="INFO_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>./log/info.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>./was-logs/info.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>2</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<!-- 로거 -->
+	<!-- 루트 로거 -->
+	<root level="DEBUG">
+		<appender-ref ref="console"/>
+	</root>
+	<logger name="jdbc.sqlonly" level="OFF" >
+		<appender-ref ref="console"/>
+	</logger>
+	<logger name="jdbc.resultsettable" level="OFF" >
+		<appender-ref ref="console"/>
+	</logger>
+	<logger name="jdbc.sqltiming" level="OFF"/>
+	<logger name="jdbc.audit" level="OFF"/>
+	<logger name="jdbc.connection" level="OFF"/>
+	<logger name="jdbc" level="OFF"/>
+	<logger name="org.thymeleaf" level="OFF"/>
+	<logger name="board.board.service" level="error" additivity="false">
+		<appender-ref ref="EMAIL"/>
+	</logger>
+
+</configuration>

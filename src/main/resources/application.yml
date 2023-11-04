@@ -1,0 +1,31 @@
+spring:
+    application: 
+        name: boardapp
+    datasource:
+        url: jdbc:log4jdbc:mysql://localhost:3306/jpastart?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    jpa:
+      properties:
+            hibernate:
+              dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+              format_sql: true
+              ddl-auto: create
+      show-sql: false
+      open-in-view: true
+#      테이블이 초기화됨
+#      hibernate:
+#        ddl-auto: create
+
+
+
+
+server:
+    port: 8888
+
+mybatis:
+    mapper-locations: classpath:mapper/**/*.xml
+    type-aliases-package: board.board
+    configuration:
+        map-underscore-to-camel-case: true
