@@ -33,6 +33,13 @@ public class JpaBoardServiceImpl implements JpaBoardService {
     }
 
     @Override
+    public List<BoardFileEntity> selectBoardFileList(int boardIdx) throws Exception {
+        List<BoardFileEntity> fileEntityList = jpaBoardRepository.findAllbyBoardFile(boardIdx);
+
+        return fileEntityList;
+    }
+
+    @Override
     public void saveBoard(BoardEntity board) throws Exception {
         board.setCreatorId("admin");
 
@@ -60,32 +67,7 @@ public class JpaBoardServiceImpl implements JpaBoardService {
 
     @Override
     public void deleteBoard(int boardIdx) {
-        deleteBoardFile(boardIdx);
-        //파일을 삭제하고싶으면 사용, 저장해놓고싶으면 주석처리
         jpaBoardRepository.deleteById(boardIdx);
-    }
-
-    @Override
-    public void deleteBoardFile(int boardIdx) {
-        int idx = boardIdx + 1;
-        List<BoardFileEntity> boardFileImgs = new ArrayList<BoardFileEntity>();
-        while (jpaBoardRepository.findBoardFile(boardIdx, idx) != null) {
-            BoardFileEntity boardFileImg = jpaBoardRepository.findBoardFile(boardIdx, idx);
-            boardFileImgs.add(boardFileImg);
-            idx++;
-        }
-        int od = 0;
-        while (boardFileImgs.size() != 0) {
-            String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + boardFileImgs.get(od).getStoredFilePath();
-            File file = new File(storedFilePath);
-            file.delete();
-
-            boardFileImgs.remove(od);
-        }
-//		파일 위까지 절대경로 = Paths.get("").toAbsolutePath()
-//		사진이름겸 경로 = boardFileImg.getStoredFilePath()
-//      od = 리스트 인덱스 접근변수
-        jpaBoardRepository.deleteBoardEntityByBoardIdx(boardIdx, boardIdx+1);
     }
 
     @Override

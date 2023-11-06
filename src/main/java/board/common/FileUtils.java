@@ -1,6 +1,7 @@
 package board.common;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -119,4 +120,16 @@ public class FileUtils {
         }
         return fileList;
     }
+    public void deleteBoardFile(List<BoardFileEntity> FileList) {
+        while (FileList.size() != 0) {
+            String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + FileList.get(0).getStoredFilePath();
+            File file = new File(storedFilePath);
+            file.delete();
+
+            FileList.remove(0);
+        }
+//		파일 위까지 절대경로 = Paths.get("").toAbsolutePath()
+//		사진이름겸 경로 = boardFileImg.getStoredFilePath()
+    }
+
 }

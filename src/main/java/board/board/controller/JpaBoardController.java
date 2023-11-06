@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,26 +22,28 @@ import org.springframework.web.servlet.ModelAndView;
 import board.board.entity.BoardEntity;
 import board.board.entity.BoardFileEntity;
 import board.board.service.JpaBoardService;
+import sun.tools.jconsole.JConsole;
 
 @Controller
+@ComponentScan
 public class JpaBoardController {
-	
+
 	@Autowired
 	private JpaBoardService jpaBoardService;
 
 	@Autowired
 	private board.common.FileUtils fileUtils;
-	
+
 	@RequestMapping(value="/jpa/board", method=RequestMethod.GET)
 	public ModelAndView openBoardList(ModelMap model) throws Exception{
 		ModelAndView mv = new ModelAndView("/board/jpaBoardList");
-		
+
 		List<BoardEntity> list = jpaBoardService.selectBoardList();
 		mv.addObject("list", list);
-		
+
 		return mv;
 	}
-	
+
 	//글을 추가할때 필요한 부분
 	@RequestMapping(value="/jpa/board/write", method=RequestMethod.GET)
 	public String openBoardWrite() throws Exception{
@@ -55,41 +58,48 @@ public class JpaBoardController {
 		jpaBoardService.saveBoard(board);
 		return "redirect:/jpa/board";
 	}
-	
+
 	@RequestMapping(value="/jpa/board/{boardIdx}", method=RequestMethod.GET)
 	public ModelAndView openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception{
 		ModelAndView mv = new ModelAndView("/board/jpaBoardDetail");
-		
+
 		BoardEntity board = jpaBoardService.selectBoardDetail(boardIdx);
 		mv.addObject("board", board);
-		
+
 		return mv;
 	}
-	
+
 	@RequestMapping(value="/jpa/board/{boardIdx}", method=RequestMethod.PUT)
 	public String updateBoard(BoardEntity board) throws Exception{
 		jpaBoardService.saveBoard(board);
 		return "redirect:/jpa/board";
 	}
-	
+
 	@RequestMapping(value="/jpa/board/{boardIdx}", method=RequestMethod.DELETE)
 	public String deleteBoard(@PathVariable("boardIdx") int boardIdx) throws Exception{
-//		jpaBoardService.deleteBoardFile(boardIdx);
+		List<BoardFileEntity> fileEntityList = jpaBoardService.selectBoardFileList(boardIdx);
+
+		fileUtils.deleteBoardFile(fileEntityList);
 		jpaBoardService.deleteBoard(boardIdx);
 		return "redirect:/jpa/board";
 	}
-	
+
+	@RequestMapping(value="/jpa/board/{idx}/{boardIdx}", method=RequestMethod.DELETE)
+	public String deleteFile(@PathVariable("idx") int idx, @PathVariable("boardIdx") int boardIdx){
+		return "redirect:/jpa/board/"+boardIdx;
+	}
+
 	@RequestMapping(value="/jpa/board/file", method=RequestMethod.GET)
 	public void downloadBoardFile(int boardIdx, int idx, HttpServletResponse response) throws Exception{
-		BoardFileEntity file = jpaBoardService.selectBoardFileInformation(boardIdx, idx); 
-		
+		BoardFileEntity file = jpaBoardService.selectBoardFileInformation(boardIdx, idx);
+
 		byte[] files = FileUtils.readFileToByteArray(new File(file.getStoredFilePath()));
-		
+
 		response.setContentType("application/octet-stream");
 		response.setContentLength(files.length);
 		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(file.getOriginalFileName(),"UTF-8")+"\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
-		
+
 		response.getOutputStream().write(files);
 		response.getOutputStream().flush();
 		response.getOutputStream().close();

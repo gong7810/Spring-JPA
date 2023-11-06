@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class 	BoardFileEntity {
+public class BoardFileEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idx;
