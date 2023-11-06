@@ -19,10 +19,11 @@ import board.board.entity.BoardFileEntity;
 @Component
 public class FileUtils {
 
-    public List<BoardFileDto> parseFileInfo1(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-//        if(ObjectUtils.isEmpty(multipartHttpServletRequest)){
-//			return null;
-//		}
+//    파일추가 update
+    public List<BoardFileDto> parseFileInfo1(int boardIdx, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+        if(ObjectUtils.isEmpty(multipartHttpServletRequest)){
+			return null;
+		}
 
         List<BoardFileDto> fileList = new ArrayList<>();
 
@@ -37,7 +38,7 @@ public class FileUtils {
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
         String newFileName, originalFileExtension, contentType;
-
+//        업로드시 에러나는 파일확장자가 존재
         while (iterator.hasNext()) {
             List<MultipartFile> list = multipartHttpServletRequest.getFiles(iterator.next());
             for (MultipartFile multipartFile : list) {
@@ -55,6 +56,7 @@ public class FileUtils {
 
                 newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
                 BoardFileDto boardFile = new BoardFileDto();
+                boardFile.setBoardIdx(boardIdx);
                 boardFile.setFileSize(multipartFile.getSize());
                 boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
                 boardFile.setStoredFilePath(path + "/" + newFileName);
@@ -66,7 +68,7 @@ public class FileUtils {
         }
         return fileList;
     }
-
+//    기본 update
     public List<BoardFileEntity> parseFileInfo(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
         if (ObjectUtils.isEmpty(multipartHttpServletRequest)) {
             return null;
@@ -121,6 +123,18 @@ public class FileUtils {
         return fileList;
     }
     public void deleteBoardFile(List<BoardFileEntity> FileList) {
+        while (FileList.size() != 0) {
+            String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + FileList.get(0).getStoredFilePath();
+            File file = new File(storedFilePath);
+            file.delete();
+
+            FileList.remove(0);
+        }
+//		파일 위까지 절대경로 = Paths.get("").toAbsolutePath()
+//		사진이름겸 경로 = boardFileImg.getStoredFilePath()
+    }
+
+    public void deleteBoardFile2(List<BoardFileDto> FileList) {
         while (FileList.size() != 0) {
             String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + FileList.get(0).getStoredFilePath();
             File file = new File(storedFilePath);

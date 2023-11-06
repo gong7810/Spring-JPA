@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import board.board.entity.BoardFileEntity;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,7 @@ public class BoardController {
 
 	@RequestMapping("/board/insertBoard.do")
 	public String insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
-		List<BoardFileDto> list = fileUtils.parseFileInfo1(multipartHttpServletRequest);
+		List<BoardFileDto> list = fileUtils.parseFileInfo1(board.getBoardIdx(), multipartHttpServletRequest);
 		boardService.insertBoard(board, list);
 		return "redirect:/board/openBoardList.do";
 	}
@@ -61,13 +62,16 @@ public class BoardController {
 	}
 
 	@RequestMapping("/board/updateBoard.do")
-	public String updateBoard(BoardDto board) throws Exception{
-		boardService.updateBoard(board);
+	public String updateBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
+		boardService.updateBoard(board, multipartHttpServletRequest);
 		return "redirect:/board/openBoardList.do";
 	}
 
 	@RequestMapping("/board/deleteBoard.do")
 	public String deleteBoard(int boardIdx) throws Exception{
+		List<BoardFileDto> fileDtoList = boardService.selectBoardFileList(boardIdx);
+		fileUtils.deleteBoardFile2(fileDtoList);
+
 		boardService.deleteBoard(boardIdx);
 		return "redirect:/board/openBoardList.do";
 	}

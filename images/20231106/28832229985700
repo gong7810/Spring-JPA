@@ -1,0 +1,138 @@
+[ex8] 아래와 같이 출력될 수 있도록 나머지 소스코드를 완성하세요.
+JAVA 수업 : 남도현 허석원
+jQuery 수업 : 박지효 정예진 진승우 서문훈
+
+class Main{
+public static void main(String args[]){
+printInfo(
+"JAVA",
+new Person[]{
+new Person("남도현"),
+new Person("허석원")
+}
+);
+printInfo(
+"jQuery",
+new Person[]{
+new Person("박지효"),
+new Person("정예진"),
+new Person("진승우"),
+new Person("서문훈")
+}
+);
+}
+}
+
+[an]
+package test;
+
+class Person{
+	String name;
+	Person(String name){this.name=name;}
+}
+
+public class Main{
+	static void printInfo(String title, Person[] person) {
+		System.out.print(title+" 수업: ");
+		for(Person user : person) {
+			System.out.print(user.name+" ");
+		}
+		System.out.println();
+	}
+	
+	public static void main(String args[]){
+		printInfo(
+				"JAVA",
+				new Person[]{
+						new Person("남도현"),
+						new Person("허석원")
+				}
+		);
+		printInfo(
+				"jQuery",
+				new Person[]{
+						new Person("박지효"),
+						new Person("정예진"),
+						new Person("진승우"),
+						new Person("서문훈")
+				}
+		);	
+	}
+}
+
+[ex]
+class Person{}
+class Hotel{
+Person[] array=new Person[10];
+}
+class Main{
+public static void main(String args[]){
+Hotel hotel=new Hotel("제주파르나스호텔 VIP ROOM");
+hotel.enter(1,new Person("남도현")); // 1호실 : 남도현님
+hotel.enter(2,new Person("허석원")); // 2호실 : 허석원님
+hotel.enter(7,new Person("박지효")); // 7호실 : 박지효님
+
+hotel.printInfo();
+/*
+제주파르나스호텔 VIP ROOM
+예약가능한 호실 : 3 4 5 6 8 9 10
+*/
+hotel.printGuestInfo(7); // 7호실 예약자 박지효님
+hotel.printGuestInfo("허석원"); // 2호실 예약하셨습니다
+}
+}
+
+[an]
+package test;
+
+class Person{
+	String name;
+	Person(String name){this.name=name;}
+}
+
+class Hotel{
+	String title;
+	Person[] array=new Person[10];
+	Hotel(String title) {this.title=title;}
+	
+	void enter(int num, Person person) {
+		array[num-1]=person;
+	}
+	void printInfo() {
+		System.out.println(title);
+		System.out.print("예약가능한 호실 : ");
+		for(int i=0; i<array.length; i++) {
+			if(array[i] == null) {
+				System.out.print(i+1+" ");
+			}
+		}
+		System.out.println();
+	}
+	void printGuestInfo(int num) {
+		System.out.println(num+"호실 예약자 "+array[num-1].name+"님");
+	}
+	void printGuestInfo(String name) {
+		for(int i=0; i<array.length; i++) {
+			if(array[i].name == name) {
+				System.out.print(i+1+"호실 예약하셨습니다");
+				break;
+			}
+		}
+	}
+}
+class Main{
+	public static void main(String args[]){
+		Hotel hotel=new Hotel("제주파르나스호텔 VIP ROOM");
+		hotel.enter(1,new Person("남도현")); // 1호실 : 남도현님
+		hotel.enter(2,new Person("허석원")); // 2호실 : 허석원님
+		hotel.enter(7,new Person("박지효")); // 7호실 : 박지효님
+		
+		hotel.printInfo();
+		/*
+		제주파르나스호텔 VIP ROOM
+		예약가능한 호실 : 3 4 5 6 8 9 10
+		*/
+		hotel.printGuestInfo(7); // 7호실 예약자 박지효님
+		hotel.printGuestInfo("허석원"); // 2호실 예약하셨습니다
+}
+}

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardDto> selectBoardList() throws Exception {
 		return boardMapper.selectBoardList();
+	}
+
+	@Override
+	public List<BoardFileDto> selectBoardFileList(int boardIdx) throws Exception{
+		return boardMapper.selectBoardFileList(boardIdx);
 	}
 	
 	@Override
@@ -66,7 +72,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public void updateBoard(BoardDto board) throws Exception {
+	public void updateBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+		List<BoardFileDto> addFileList = fileUtils.parseFileInfo1(board.getBoardIdx(), multipartHttpServletRequest);
+		if(CollectionUtils.isEmpty(addFileList) == false){
+			boardMapper.insertBoardFileList(addFileList);
+		}
 		boardMapper.updateBoard(board);
 	}
 

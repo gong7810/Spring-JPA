@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import board.board.dto.BoardDto;
 import board.board.service.BoardService;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RestController
 public class RestBoardApiController {
@@ -35,8 +36,8 @@ public class RestBoardApiController {
 	}
 	
 	@RequestMapping(value="/api/board/{boardIdx}", method=RequestMethod.PUT)
-	public String updateBoard(@RequestBody BoardDto board) throws Exception{
-		boardService.updateBoard(board);
+	public String updateBoard(@RequestBody BoardDto board, @RequestBody MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
+		boardService.updateBoard(board, multipartHttpServletRequest);
 		return "redirect:/board";
 	}
 	

@@ -8,7 +8,7 @@
 <body>
 	<div class="container">
 		<h2>게시글 상세 화면</h2>
-	    <form id="frm" method="post">
+	    <form id="frm" method="post" enctype="multipart/form-data">
 	    	<table class="board_detail">
 				<colgroup>
 					<col width="15%"/>
@@ -42,13 +42,14 @@
 				</tbody>
 			</table>
 			<input type="hidden" id="boardIdx" name="boardIdx" th:value="${board.boardIdx }">
+			<input type="file" style="float:right" id="add_file" name="files" th:value="파일추가" multiple="multiple">
 		</form>
-		
 		<div class="file_list" th:each="list : ${board.fileList}" >
 			<a style="float:left" th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" th:text="|${list.originalFileName} (${list.fileSize} kb)|"></a>
 			<input type="button" id="delete_file" th:value="파일삭제" th:onclick="|location.href='@{/board/deleteBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}'|">
 		</div>
-		
+
+
 		<a href="#this" id="list" class="btn">목록으로</a>
 		<a href="#this" id="edit" class="btn">수정하기</a>
 		<a href="#this" id="delete" class="btn">삭제하기</a>
