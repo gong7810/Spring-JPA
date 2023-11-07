@@ -64,9 +64,7 @@ public class BoardServiceImpl implements BoardService{
 	public BoardDto selectBoardDetail(int boardIdx) throws Exception{
 		BoardDto board = boardMapper.selectBoardDetail(boardIdx);
 		List<BoardFileDto> fileList = boardMapper.selectBoardFileList(boardIdx);
-//		for(BoardFileDto l : fileList){
-//			System.out.println(l.getFileSize());
-//		}
+
 		board.setFileList(fileList);
 		
 		boardMapper.updateHitCount(boardIdx);

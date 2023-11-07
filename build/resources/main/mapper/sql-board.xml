@@ -24,6 +24,8 @@
 			board_idx,
 			original_file_name,
 -- 			FORMAT(ROUND(file_size / 1024), 0) AS file_size
+-- 			Format함수를 사용하면 파일크기가 4자릿수 이상으로 커졌을때
+-- 			filesize가 '6,636'꼴의 string으로 처리됨
 			file_size
 		FROM
 			t_file
