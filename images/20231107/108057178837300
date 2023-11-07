@@ -1,0 +1,374 @@
+[an1]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="radio" name="chk" value="개" />개
+    <input type="radio" name="chk" value="고양이" />고양이
+    <input type="radio" name="chk" value="오리" />오리
+    <button onclick="f()">선택된값보기</button>
+    <script>
+      function f() {
+        const val = document.querySelector("input:checked").value;
+        console.log(val);
+      }
+    </script>
+  </body>
+</html>
+
+
+
+[an2]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="checkbox" name="chk" value="개" />개
+    <input type="checkbox" name="chk" value="고양이" />고양이
+    <input type="checkbox" name="chk" value="오리" />오리
+    <button onclick="f()">선택된값보기</button>
+    <script>
+      let buffer = [];
+      function f() {
+        const val = document.querySelectorAll("input[type='checkbox']:checked");
+        val.forEach((element) => buffer.push(element.value));
+        console.log(buffer);
+      }
+    </script>
+  </body>
+</html>
+
+
+[an3]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<script>
+function f(){
+let y=document.querySelector("#sel1").value;
+let m=document.querySelector("#sel2").value;
+document.querySelector("#container").innerHTML=`${y}년${m}월`;
+}
+</script>
+</head>
+<body>
+<select id="sel1">
+<script>
+for (let index = 1900; index < 2500; index++)
+document.write("<option>"+index+"</option>");
+</script>
+</select>년
+<select id="sel2">
+<script>
+for (let index = 1; index < 13; index++)
+document.write("<option>"+index+"</option>");
+</script>
+</select>월<br/>
+<button onclick="f()">달력만들기</button>
+<div id="container">xxxx년xx월</div>
+</body>
+</html>
+
+
+[an4]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = function () {
+        document.querySelector("#num1").focus();
+      };
+      function f() {
+        const pattern = /\s/g;
+        const num1 = document.querySelector("#num1").value;
+        const num2 = document.querySelector("#num2").value;
+        if (isNaN(num1) || isNaN(num2)) {
+          document.querySelector("#num3").value = "숫자형식 오류";
+        } else if (
+          num1.match(pattern) ||
+          num2.match(pattern) ||
+          num1.lentgh == 0 ||
+          num2.length == 0
+        ) {
+          document.querySelector("#num3").value = "아무숫자나 입력하세요";
+        } else {
+          document.querySelector("#num3").value =
+            parseInt(num1) + parseInt(num2);
+        }
+      }
+      function f2() {
+        for (let index = 1; index <= 3; index++) {
+          document.querySelector(`#num${index}`).value = "";
+        }
+        document.querySelector("#num1").focus();
+      }
+    </script>
+  </head>
+  <body>
+    <div>:::덧셈결과확인하기:::</div>
+    숫자1 : <input type="text" id="num1" /> 숫자2 :
+    <input type="text" id="num2" /> 결과 :
+    <input type="text" id="num3" onfocus="f()" />
+    <button onclick="f2()">초기화</button>
+  </body>
+</html>
+
+
+
+[an5]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      span:hover {
+        color: red;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        const sp = document.querySelector("#sp").addEventListener("mouseover", Onmouse);
+        const txt = document.querySelector("#txt").addEventListener("mouseleave", Offmouse);
+      };
+      function Onmouse() {
+        txt.value = "글자 입력";
+      }
+      function Offmouse() {
+        txt.value = "";
+      }
+    </script>
+  </head>
+  <body>
+    <span id="sp" onmou>AAA</span>
+    <input type="text" id="txt" />
+  </body>
+</html>
+
+
+
+[an6]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input:focus {
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" />
+  </body>
+</html>
+
+
+[an7]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let dataset = new Dataset("aa", 11, "가좌동", "010-1111-1111");
+      function Dataset(id, pw, addr, tel) {
+        this.id = id;
+        this.pw = pw;
+        this.addr = addr;
+        this.tel = tel;
+        this.list = [
+          { id: this.id, pw: this.pw, addr: this.addr, tel: this.tel },
+          { id: this.id, pw: this.pw, addr: this.addr, tel: this.tel },
+          { id: this.id, pw: this.pw, addr: this.addr, tel: this.tel },
+          { id: this.id, pw: this.pw, addr: this.addr, tel: this.tel },
+        ];
+      }
+      console.log(dataset.list[0].id); // aa
+      console.log(dataset.list[1].pw); // 11
+      console.log(dataset.list[2].addr); // 가좌동
+      console.log(dataset.list[3].tel); // 010-1111-1111
+    </script>
+  </body>
+</html>
+
+
+[an8]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function A() {
+        this.a = 100;
+      }
+      let a = new A();
+      console.log((() => ({ a: 200 }))().a);
+    </script>
+  </body>
+</html>
+
+
+
+[an9]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let array = ["red", "green", "blue"];
+      array.forEach((color) => {
+        let btn = document.createElement("button");
+        btn.innerText = color;
+        btn.addEventListener("mouseover", f);
+        btn.addEventListener("mouseleave", f2);
+        document.body.appendChild(btn);
+      });
+      function f() {
+        this.style.backgroundColor = this.innerText;
+      }
+      function f2() {
+        this.style.backgroundColor = "";
+      }
+    </script>
+  </body>
+</html>
+
+
+
+[an10-1 토클없이]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let div1 = document.createElement("div");
+      let div2 = document.createElement("div");
+      div1.innerText = "소스코드숨기기";
+      div1.addEventListener("click", f);
+      function f() {
+        if (this.innerText == "소스코드숨기기") {
+          this.innerText = "소스코드보여주기";
+        } else if (this.innerText == "소스코드보여주기") {
+          this.innerText = "소스코드숨기기";
+        }
+      }
+      document.body.appendChild(div1);
+    </script>
+  </body>
+</html>
+
+
+[an10-2 토클사용]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const div1 = document.createElement("div");
+      const div2 = document.createElement("div");
+      div1.innerText = "소스코드숨기기";
+      div2.innerText = "소스코드보여주기";
+      div2.setAttribute("class", "hidden");
+      div1.addEventListener("click", function () {
+        div1.classList.toggle("hidden");
+        div2.classList.toggle("hidden");
+      });
+      div2.addEventListener("click", function () {
+        div1.classList.toggle("hidden");
+        div2.classList.toggle("hidden");
+      });
+      document.body.appendChild(div1);
+      document.body.appendChild(div2);
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

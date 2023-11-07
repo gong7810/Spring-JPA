@@ -38,7 +38,7 @@ public class FileUtils {
         Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
         String newFileName, originalFileExtension, contentType;
-//        업로드시 에러나는 파일확장자가 존재
+//        파일 크기가 너무 크면 익셉션 발생
         while (iterator.hasNext()) {
             List<MultipartFile> list = multipartHttpServletRequest.getFiles(iterator.next());
             for (MultipartFile multipartFile : list) {
@@ -57,7 +57,7 @@ public class FileUtils {
                 newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
                 BoardFileDto boardFile = new BoardFileDto();
                 boardFile.setBoardIdx(boardIdx);
-                boardFile.setFileSize(multipartFile.getSize());
+                boardFile.setFileSize((multipartFile.getSize()/1024));
                 boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
                 boardFile.setStoredFilePath(path + "/" + newFileName);
                 fileList.add(boardFile);
