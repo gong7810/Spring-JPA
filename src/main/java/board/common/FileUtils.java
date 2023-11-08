@@ -19,7 +19,7 @@ import board.board.entity.BoardFileEntity;
 @Component
 public class FileUtils {
 
-//    파일추가 update
+//    mybatis update
     public List<BoardFileDto> parseFileInfo1(int boardIdx, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
         if(ObjectUtils.isEmpty(multipartHttpServletRequest)){
 			return null;
@@ -68,7 +68,7 @@ public class FileUtils {
         }
         return fileList;
     }
-//    기본 update
+//    jpa update
     public List<BoardFileEntity> parseFileInfo(MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
         if (ObjectUtils.isEmpty(multipartHttpServletRequest)) {
             return null;
@@ -122,6 +122,15 @@ public class FileUtils {
         }
         return fileList;
     }
+
+//    jpa 삭제 메서드
+    public void deleteFile_Path(List<String> FilePath) {
+        for(String filePath : FilePath){
+            File file = new File(filePath);
+            file.delete();
+        }
+    }
+
     public void deleteBoardFile(List<BoardFileEntity> FileList) {
         while (FileList.size() != 0) {
             String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + FileList.get(0).getStoredFilePath();
@@ -134,6 +143,7 @@ public class FileUtils {
 //		사진이름겸 경로 = boardFileImg.getStoredFilePath()
     }
 
+//    mybatis 삭제 메서드
     public void deleteBoardFile2(List<BoardFileDto> FileList) {
         while (FileList.size() != 0) {
             String storedFilePath = Paths.get("").toAbsolutePath() + "\\" + FileList.get(0).getStoredFilePath();

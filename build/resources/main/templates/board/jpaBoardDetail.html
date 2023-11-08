@@ -8,7 +8,7 @@
 <body>
 	<div class="container">
 		<h2>게시글 상세 화면</h2>
-	    <form id="frm" method="post">
+	    <form id="frm" method="post" enctype="multipart/form-data">
 	    	<table class="board_detail">
 				<colgroup>
 					<col width="15%"/>
@@ -43,12 +43,14 @@
 			</table>
 			<input type="hidden" id="boardIdx" name="boardIdx" th:value="${board.boardIdx }">
 			<input type="hidden" id="method" name="_method"/>
+			<input type="file" style="float:right" id="add_file" name="files" th:value="파일추가" multiple="multiple">
 		</form>
 
 		<div class="file_list" th:each="list : ${board.fileList}" >
-			<a style="float:left" th:href="@{/jpa/board/file(idx=${list.idx}, boardIdx=${board.boardIdx})}" th:text="|${list.originalFileName} (${#numbers.formatInteger(list.fileSize/1000, 1, 'DEFAULT')} kb)|"></a>
-			<input type="button" id="delete_file" th:value="파일삭제" th:onclick="|location.href='@{/jpa/board(idx=${list.idx}, boardIdx=${board.boardIdx})}'|">
-
+			<div class="file_info">
+				<a style="float:left" th:href="@{/jpa/board/file(idx=${list.idx}, boardIdx=${board.boardIdx})}" th:text="|${list.originalFileName} (${#numbers.formatInteger(list.fileSize/1000, 1, 'DEFAULT')} kb)|"></a>
+				<input type="button" class="delete_file" id="delete_file" th:attr="data-idx=${list.idx}" th:value="파일삭제">
+			</div>
 		</div>
 
 		<a href="#this" id="list" class="btn">목록으로</a>
@@ -60,26 +62,59 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var boardIdx = $("#boardIdx").val();
-			
+
 			$("#list").on("click", function(){
 				location.href = "/jpa/board/";
 			});
-			
+
 			$("#edit").on("click", function(){
 				$("#method").val("put");
-				
+
 				var frm = $("#frm")[0];
 				frm.action = "/jpa/board/"+boardIdx;
 				frm.submit();
 			});
-			
+
 			$("#delete").on("click", function(){
 				$("#method").val("delete");
-				
-				var frm = $("#frm")[0];
-				frm.action = "/jpa/board/"+boardIdx;
-				frm.submit();
+
+				$.ajax({
+					url: "/jpa/board/"+boardIdx,
+					method: "DELETE",
+					data: {
+						boardIdx: boardIdx
+					},
+					success: function (response){
+						console.log("delete_success");
+					},
+					error: function (xhr, status, error){
+						console.error("delete_failed")
+					}
+				})
+				location.href = "/jpa/board/";
 			});
+
+			$(".delete_file").on("click", function (e) {
+				e.preventDefault();
+				let idx = $(this).data("idx")
+				let element = $(this)
+
+				$.ajax({
+					url: "/jpa/board/deleteFile",
+					method: "DELETE",
+					data: {
+						idx: idx,
+						boardIdx: boardIdx
+					},
+					success: function (response){
+						console.log("delete_success");
+						element.closest('.file_info').remove();
+					},
+					error: function (xhr, status, error){
+						console.error("delete_failed")
+					}
+				})
+			})
 		});
 	</script>
 </body>

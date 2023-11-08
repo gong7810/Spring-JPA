@@ -42,6 +42,7 @@
 				</tbody>
 			</table>
 			<input type="hidden" id="boardIdx" name="boardIdx" th:value="${board.boardIdx }">
+			<input type="hidden" id="method" name="_method"/>
 			<input type="file" style="float:right" id="add_file" name="files" th:value="파일추가" multiple="multiple">
 		</form>
 		<div class="file_list" th:each="list : ${board.fileList}" >
@@ -63,6 +64,8 @@
 			});
 			
 			$("#edit").on("click", function(){
+				$("#method").val("put");
+
 				var frm = $("#frm")[0];
 				frm.action = "/board/updateBoard.do";
 				frm.submit();

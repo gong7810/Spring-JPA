@@ -114,7 +114,6 @@
 			updater_id = 'admin'
 		WHERE
 			idx = #{idx}
-		  AND board_idx = #{boardIdx}
 		]]>
 	</update>
 

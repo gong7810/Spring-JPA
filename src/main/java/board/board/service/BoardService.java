@@ -13,6 +13,8 @@ public interface BoardService {
 	
 	List<BoardDto> selectBoardList() throws Exception;
 
+	List<Integer> selectidxList(int boardIdx) throws Exception;
+
 	List<BoardFileDto> selectBoardFileList(int boardIdx) throws Exception;
 	
 	void insertBoard(BoardDto board, List<BoardFileDto> list) throws Exception;
@@ -25,7 +27,7 @@ public interface BoardService {
 
 	void deleteBoard(int boardIdx) throws Exception;
 
-	void deleteBoardFile(int idx, int boardIdx) throws Exception;
+	void deleteBoardFile(int idx) throws Exception;
 
 	BoardFileDto selectBoardFileInformation(int idx, int boardIdx) throws Exception; 
 }

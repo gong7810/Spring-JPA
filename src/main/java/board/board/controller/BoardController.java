@@ -69,21 +69,19 @@ public class BoardController {
 
 	@RequestMapping("/board/deleteBoard.do")
 	public String deleteBoard(int boardIdx) throws Exception{
-		List<BoardFileDto> fileDtoList = boardService.selectBoardFileList(boardIdx);
-		if(fileDtoList.isEmpty() == false){
-			for(BoardFileDto file : fileDtoList){
-				boardService.deleteBoardFile(file.getIdx(), file.getBoardIdx());
+		List<Integer> idxList = boardService.selectidxList(boardIdx);
+		if(idxList.isEmpty() == false){
+			for(int idx : idxList){
+				boardService.deleteBoardFile(idx);
 			}
-			fileUtils.deleteBoardFile2(fileDtoList);
 		}
-
 		boardService.deleteBoard(boardIdx);
 		return "redirect:/board/openBoardList.do";
 	}
 
 	@RequestMapping("board/deleteBoardFile.do")
 	public String deleteBoardFile(@RequestParam int idx, @RequestParam int boardIdx) throws Exception {
-		boardService.deleteBoardFile(idx, boardIdx);
+		boardService.deleteBoardFile(idx);
 		return "redirect:/board/openBoardDetail.do?boardIdx="+boardIdx;
 	}
 

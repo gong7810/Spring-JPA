@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +28,20 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<BoardDto> selectBoardList() throws Exception {
 		return boardMapper.selectBoardList();
+	}
+
+	@Override
+	public List<Integer> selectidxList(int boardIdx) throws Exception{
+		List<BoardFileDto> fileDtoList = boardMapper.selectBoardFileList(boardIdx);
+		List<Integer> idxList = new ArrayList<>();
+		if(fileDtoList.isEmpty() == false){
+			for(BoardFileDto file : fileDtoList){
+				idxList.add(file.getIdx());
+			}
+		}
+
+		fileUtils.deleteBoardFile2(fileDtoList);
+		return idxList;
 	}
 
 	@Override
@@ -87,8 +102,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void deleteBoardFile(int idx, int boardIdx) throws Exception {
-		boardMapper.deleteBoardFile(idx, boardIdx);
+	public void deleteBoardFile(int idx) throws Exception {
+		boardMapper.deleteBoardFile(idx);
 	}
 
 	@Override
